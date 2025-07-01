@@ -1,6 +1,12 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Invoice } from "@/pages/Invoices";
 import { IndianRupee } from "lucide-react";
 
@@ -19,7 +25,7 @@ const InvoicePreview = ({
   businessPhone,
 }: InvoicePreviewProps) => {
   return (
-    <Card className="max-h-screen overflow-auto">
+    <Card style={{ backgroundColor: "white", overflow: "visible", maxHeight: "none" }}>
       <CardHeader>
         {/* <CardTitle>Invoice Preview</CardTitle> */}
       </CardHeader>
@@ -35,7 +41,9 @@ const InvoicePreview = ({
               <div className="text-right">
                 <div className="text-lg font-semibold">{businessName}</div>
                 {businessAddress && (
-                  <div className="text-sm text-gray-600 mt-1 whitespace-pre-line">{businessAddress}</div>
+                  <div className="text-sm text-gray-600 mt-1 whitespace-pre-line">
+                    {businessAddress}
+                  </div>
                 )}
                 {businessPhone && (
                   <div className="text-sm text-gray-600">{businessPhone}</div>
@@ -144,12 +152,16 @@ const InvoicePreview = ({
             {invoice.paymentInstructions && (
               <div>
                 <h4 className="font-semibold mb-2">Payment Instructions:</h4>
-                <p className="text-sm text-gray-600 whitespace-pre-line">{invoice.paymentInstructions}</p>
+                <p className="text-sm text-gray-600 whitespace-pre-line">
+                  {invoice.paymentInstructions}
+                </p>
               </div>
             )}
             {invoice.thankYouNote && (
               <div>
-                <p className="text-sm text-gray-600 whitespace-pre-line">{invoice.thankYouNote}</p>
+                <p className="text-sm text-gray-600 whitespace-pre-line">
+                  {invoice.thankYouNote}
+                </p>
               </div>
             )}
           </div>

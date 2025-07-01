@@ -169,26 +169,35 @@ const SavedInvoices = () => {
 
   useEffect(() => {
     if (shouldDownload && hiddenInvoiceRef.current && selectedInvoice) {
-      html2pdf()
-        .set({
-          margin: 0.5,
-          filename: `Invoice-${selectedInvoice.invoiceNumber}.pdf`,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-        })
-        .from(hiddenInvoiceRef.current)
-        .save()
-        .then(() => setShouldDownload(false))
-        .catch((err) => {
-          console.error("PDF generation error:", err);
-          toast({
-            title: "PDF Error",
-            description: "Failed to generate PDF.",
-            variant: "destructive",
+      // Wait a moment to ensure the component is fully rendered
+      const timer = setTimeout(() => {
+        html2pdf()
+          .set({
+            margin: 0.5,
+            filename: `Invoice-${selectedInvoice.invoiceNumber}.pdf`,
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              logging: true,
+            },
+            jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+          })
+          .from(hiddenInvoiceRef.current!)
+          .save()
+          .then(() => setShouldDownload(false))
+          .catch((err) => {
+            console.error("PDF generation error:", err);
+            toast({
+              title: "PDF Error",
+              description: "Failed to generate PDF.",
+              variant: "destructive",
+            });
+            setShouldDownload(false);
           });
-          setShouldDownload(false);
-        });
+      }, 500); // slight delay for rendering
+
+      return () => clearTimeout(timer);
     }
   }, [shouldDownload, hiddenInvoiceRef, selectedInvoice]);
 
@@ -306,7 +315,7 @@ const SavedInvoices = () => {
         {/* Hidden invoice for PDF generation */}
         <div style={{ position: "absolute", left: "-9999px", top: "-9999px" }}>
           {selectedInvoice && (
-            <div ref={hiddenInvoiceRef}>
+            <div ref={hiddenInvoiceRef} className="invoice-pdf-wrapper print-invoice">
               <InvoicePreview
                 invoice={selectedInvoice}
                 businessName={businessName}
@@ -315,6 +324,7 @@ const SavedInvoices = () => {
                 isPrint={true}
               />
             </div>
+
           )}
         </div>
       </div>
