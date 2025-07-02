@@ -52,7 +52,7 @@ const InvoiceItem = ({ item, onUpdate, onDelete }: InvoiceItemProps) => {
         />
       </div>
       <div className="col-span-1 text-right font-medium">
-        ${item.amount.toFixed(2)}
+        	₹{item.amount.toFixed(2)}
       </div>
       <div className="col-span-1">
         <Button
